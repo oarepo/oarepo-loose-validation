@@ -260,7 +260,7 @@ class SchemaOpts:
 
 
 class Schema(base.SchemaABC, metaclass=SchemaMeta):
-    """Base schema class with which to define custom schemas.
+    """Base services class with which to define custom schemas.
 
     Example usage:
 
@@ -284,8 +284,8 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
 
 
         album = Album("Beggars Banquet", dt.date(1968, 12, 6))
-        schema = AlbumSchema()
-        data = schema.dump(album)
+        services = AlbumSchema()
+        data = services.dump(album)
         data  # {'release_date': '1968-12-06', 'title': 'Beggars Banquet'}
 
     :param only: Whitelist of the declared fields to select when
@@ -335,7 +335,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
         dt.timedelta: ma_fields.TimeDelta,
         decimal.Decimal: ma_fields.Decimal,
     }  # type: typing.Dict[type, typing.Type[ma_fields.Field]]
-    #: Overrides for default schema-level error messages
+    #: Overrides for default services-level error messages
     error_messages = {}  # type: typing.Dict[str, str]
 
     _default_error_messages = {
@@ -365,7 +365,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
         - ``additional``: Tuple or list of fields to include *in addition* to the
             explicitly declared fields. ``additional`` and ``fields`` are
             mutually-exclusive options.
-        - ``include``: Dictionary of additional fields to include in the schema. It is
+        - ``include``: Dictionary of additional fields to include in the services. It is
             usually better to define fields as class variables, but you may need to
             use this option, e.g., if your fields are Python keywords. May be an
             `OrderedDict`.
@@ -482,7 +482,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
     def handle_error(
             self, error: ValidationError, data: typing.Any, *, many: bool, **kwargs
     ):
-        """Custom error handler function for the schema.
+        """Custom error handler function for the services.
 
         :param error: The `ValidationError` raised during (de)serialization.
         :param data: The original input data.
@@ -808,7 +808,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
             many: bool | None = None,
             partial: bool | types.StrSequenceOrSet | None = None,
     ) -> dict[str, list[str]]:
-        """Validate `data` against the schema, returning a dictionary of
+        """Validate `data` against the services, returning a dictionary of
         validation errors.
 
         :param data: The data to validate.
@@ -888,7 +888,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
             self._invoke_field_validators(
                 error_store=error_store, data=result, many=many
             )
-            # Run schema-level validation
+            # Run services-level validation
             if self._has_processors(VALIDATES_SCHEMA):
                 field_errors = bool(error_store.errors)
                 self._invoke_schema_validators(
@@ -971,7 +971,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
         return result
 
     def _normalize_nested_options(self) -> None:
-        """Apply then flatten nested schema options.
+        """Apply then flatten nested services options.
         This method is private API.
         """
         if self.only is not None:
@@ -1007,7 +1007,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
             setattr(self.declared_fields[key], option_name, new_options)
 
     def _init_fields(self) -> None:
-        """Update self.fields, self.load_fields, and self.dump_fields based on schema options.
+        """Update self.fields, self.load_fields, and self.dump_fields based on services options.
         This method is private API.
         """
         if self.opts.fields:
@@ -1089,7 +1089,7 @@ class Schema(base.SchemaABC, metaclass=SchemaMeta):
         return None
 
     def _bind_field(self, field_name: str, field_obj: ma_fields.Field) -> None:
-        """Bind field to the schema, setting any necessary attributes on the
+        """Bind field to the services, setting any necessary attributes on the
         field (e.g. parent and name).
 
         Also set field load_only and dump_only values if field_name was
