@@ -15,9 +15,6 @@ from marshmallow.validate import URL as MaURL
 from marshmallow.validate import Email as MaEmail
 from marshmallow.validate import Range as MaRange
 
-
-_T = typing.TypeVar("_T")
-
 class OarepoError(str):
     def __init__(self, content, struct= True):
         self.s = content
@@ -31,6 +28,7 @@ class OarepoError(str):
         self.params = kwargs
         return self
 
+_T = typing.TypeVar("_T")
 
 class Length(MaLength):
 
