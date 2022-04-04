@@ -1,10 +1,9 @@
-from invenio_records.models import RecordMetadataBase
 from invenio_db import db
 from sqlalchemy.dialects import postgresql
 from sqlalchemy_utils.types import JSONType
 
 
-class LooseValidityBase(RecordMetadataBase):
+class LooseValidityBase:
     validace = db.Column(
         db.JSON().with_variant(
             postgresql.JSONB(none_as_null=True),
