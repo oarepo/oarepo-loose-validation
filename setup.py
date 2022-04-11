@@ -18,7 +18,7 @@ OAREPO_VERSION = os.environ.get('OAREPO_VERSION', "3.3.134")
 
 tests_require = [
     'pydocstyle',
-    'isort'
+    'isort',
 ]
 
 extras_require = {
